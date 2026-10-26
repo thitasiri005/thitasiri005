@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ristorante Bella Vista | Authentic Italian Fine Dining</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#E5C158',
+                            500: '#D4AF37',
+                            600: '#AA8C2C',
+                        },
+                        copper: '#C87D55',
+                        terracotta: '#A0522D',
+                        sage: '#6B8E23',
+                        dark: {
+                            900: '#0B0C10',
+                            800: '#14161D',
+                            700: '#1F222E',
+                            600: '#2A2E3D'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0B0C10;
+            color: #E2E8F0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF099 0%, #D4AF37 50%, #AA8C2C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+        .page-view {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+        .page-hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        .page-visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .glass-panel {
+            background: rgba(20, 22, 29, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-gold-500 selection:text-black">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-dark-900 via-gold-600/20 to-dark-900 border-b border-gold-500/20 text-xs py-2 text-center tracking-widest text-gold-400 uppercase font-cinzel">
+        <span class="inline-block animate-pulse mr-2">✦</span> Michelin Guide Selection 2026 • Florence & New York <span class="inline-block animate-pulse ml-2">✦</span>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-gold-500/20 px-4 lg:px-12 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" onclick="switchPage('home'); return false;" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full border border-gold-500 flex items-center justify-center bg-dark-800 text-gold-500 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-utensils text-lg"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-cinzel text-xl font-bold tracking-widest text-white group-hover:text-gold-400 transition-colors">BELLA VISTA</span>
+                    <span class="text-[9px] tracking-[0.3em] text-gold-500/80 uppercase font-sans">Ristorante & Enoteca</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium tracking-wide">
+                <button onclick="switchPage('home')" id="nav-home" class="nav-btn text-gold-400 border-b-2 border-gold-500 pb-1 transition-all">หน้าแรก (HOME)</button>
+                <button onclick="switchPage('menu')" id="nav-menu" class="nav-btn text-gray-300 hover:text-gold-400 border-b-2 border-transparent hover:border-gold-500/50 pb-1 transition-all">เมนูอาหาร (MENU)</button>
+                <button onclick="switchPage('about')" id="nav-about" class="nav-btn text-gray-300 hover:text-gold-400 border-b-2 border-transparent hover:border-gold-500/50 pb-1 transition-all">เกี่ยวกับเรา (ABOUT)</button>
+                <button onclick="switchPage('reservation')" id="nav-reservation" class="nav-btn text-gray-300 hover:text-gold-400 border-b-2 border-transparent hover:border-gold-500/50 pb-1 transition-all">สำรองโต๊ะ (RESERVATION)</button>
+                <button onclick="switchPage('contact')" id="nav-contact" class="nav-btn text-gray-300 hover:text-gold-400 border-b-2 border-transparent hover:border-gold-500/50 pb-1 transition-all">ติดต่อเรา (CONTACT)</button>
+            </nav>
+
+            <!-- Book Table CTA Button -->
+            <div class="hidden md:block">
+                <button onclick="switchPage('reservation')" class="bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 text-dark-900 font-bold px-5 py-2.5 rounded-sm hover:brightness-110 shadow-lg shadow-gold-500/20 transition-all font-cinzel text-xs tracking-wider uppercase">
+                    จองโต๊ะอาหาร
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-gold-400 text-2xl focus:outline-none p-2">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden pt-4 pb-2 border-t border-gold-500/20 mt-4 space-y-3">
+            <button onclick="switchPage('home'); toggleMobileMenu()" class="block w-full text-left px-4 py-2 text-gold-400 font-medium">หน้าแรก (HOME)</button>
+            <button onclick="switchPage('menu'); toggleMobileMenu()" class="block w-full text-left px-4 py-2 text-gray-300 hover:text-gold-400 font-medium">เมนูอาหาร (MENU)</button>
+            <button onclick="switchPage('about'); toggleMobileMenu()" class="block w-full text-left px-4 py-2 text-gray-300 hover:text-gold-400 font-medium">เกี่ยวกับเรา (ABOUT)</button>
+            <button onclick="switchPage('reservation'); toggleMobileMenu()" class="block w-full text-left px-4 py-2 text-gray-300 hover:text-gold-400 font-medium">สำรองโต๊ะ (RESERVATION)</button>
+            <button onclick="switchPage('contact'); toggleMobileMenu()" class="block w-full text-left px-4 py-2 text-gray-300 hover:text-gold-400 font-medium">ติดต่อเรา (CONTACT)</button>
+            <div class="pt-2 px-4">
+                <button onclick="switchPage('reservation'); toggleMobileMenu()" class="w-full bg-gold-500 text-dark-900 font-bold py-2.5 rounded-sm font-cinzel text-xs tracking-wider uppercase">
+                    จองโต๊ะอาหาร
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER (Multi-page dynamic views) -->
+    <main class="flex-grow">
+
+        <!-- ================= PAGE 1: HOME PAGE ================= -->
+        <section id="page-home" class="page-view page-visible">
+            <!-- Hero Banner -->
+            <div class="relative min-h-[90vh] flex items-center justify-center bg-cover bg-center px-4" style="background-image: linear-gradient(rgba(11, 12, 16, 0.75), rgba(11, 12, 16, 0.85)), url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1920&q=80');">
+                <div class="max-w-4xl text-center space-y-6">
+                    <p class="text-gold-400 font-cinzel tracking-[0.4em] text-sm uppercase">Benvenuti a Bella Vista</p>
+                    <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold leading-tight text-white">
+                        สัมผัสรสชาติอิตาเลียนชั้นสูง <br><span class="gold-gradient-text italic font-normal">ระดับพรีเมียม</span>
+                    </h1>
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+                        ดื่มด่ำกับสุนทรียภาพแห่งอาหารอิตาเลียนแท้ ปรุงอย่างพิถีพิถันด้วยวัตถุดิบนำเข้าจากทัสคานีและซิซิลี รังสรรค์โดยเชฟมิชลินสตาร์ในบรรยากาศสุดหรูหรา
+                    </p>
+                    <div class="pt-6 flex flex-col sm:flex-row justify-center gap-4">
+                        <button onclick="switchPage('reservation')" class="bg-gradient-to-r from-gold-500 to-gold-600 text-dark-900 font-bold px-8 py-4 rounded-sm hover:scale-105 transition-transform font-cinzel tracking-widest uppercase text-sm shadow-xl shadow-gold-500/20">
+                            สำรองโต๊ะรับประทานอาหาร
+                        </button>
+                        <button onclick="switchPage('menu')" class="border border-gold-500/60 text-gold-400 hover:bg-gold-500/10 px-8 py-4 rounded-sm transition-all font-cinzel tracking-widest uppercase text-sm">
+                            สำรวจเมนูอาหาร
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features / Philosophy Highlight -->
+            <div class="py-20 px-4 max-w-7xl mx-auto border-b border-gold-500/10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-dark-800/60 border border-gold-500/20 p-8 text-center rounded-sm hover:border-gold-500/60 transition-colors">
+                        <div class="w-16 h-16 mx-auto mb-6 rounded-full border border-gold-500/40 flex items-center justify-center text-gold-400 text-2xl">
+                            <i class="fa-solid fa-[#F0E68C] fa-wheat-awn"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl font-semibold text-white mb-3">วัตถุดิบนำเข้าแท้ 100%</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">คัดสรรวัตถุดิบสดใหม่จากฟาร์มออร์แกนิกในอิตาลี ทั้งชีส Parmigiano, น้ำมันมะกอก Extra Virgin และเห็ด Truffle ดำ</p>
+                    </div>
+
+                    <div class="bg-dark-800/60 border border-gold-500/20 p-8 text-center rounded-sm hover:border-gold-500/60 transition-colors">
+                        <div class="w-16 h-16 mx-auto mb-6 rounded-full border border-gold-500/40 flex items-center justify-center text-gold-400 text-2xl">
+                            <i class="fa-solid fa-wine-glass-empty"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl font-semibold text-white mb-3">ไวน์คอลเลกชันระดับพรีเมียม</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">รวบรวมไวน์หายากมากกว่า 500 ฉลากจากไร่ไวน์ชื่อดังในทัสคานีและเปียดมอนต์ จับคู่กับเมนูโปรดของคุณโดย Sommelier มืออาชีพ</p>
+                    </div>
+
+                    <div class="bg-dark-800/60 border border-gold-500/20 p-8 text-center rounded-sm hover:border-gold-500/60 transition-colors">
+                        <div class="w-16 h-16 mx-auto mb-6 rounded-full border border-gold-500/40 flex items-center justify-center text-gold-400 text-2xl">
+                            <i class="fa-solid fa-fire-burner"></i>
+                        </div>
+                        <h3 class="font-cinzel text-xl font-semibold text-white mb-3">สูตรดั้งเดิมผสมความทันสมัย</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">ผสมผสานเทคนิคทำอาหารดั้งเดิมของครอบครัวอิตาเลียนกับความคิดสร้างสรรค์ร่วมสมัย ให้ทุกจานเป็นงานศิลปะที่สมบูรณ์แบบ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signature Dishes Teaser -->
+            <div class="py-20 px-4 max-w-7xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <p class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Culinary Masterpieces</p>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">เมนูไฮไลต์ประจำฤดูกาล</h2>
+                    <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold-500 to-transparent mx-auto"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Highlight Item 1 -->
+                    <div class="bg-dark-800 border border-gold-500/20 overflow-hidden rounded-sm group hover:border-gold-500/50 transition-all">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=800&q=80" alt="Truffle Tagliatelle" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <span class="absolute top-4 right-4 bg-dark-900/90 text-gold-400 font-cinzel text-sm px-3 py-1 border border-gold-500/30">฿ 1,250</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl font-bold text-white mb-2">Tagliatelle al Tartufo Nero</h3>
+                            <p class="text-gray-400 text-sm mb-4">เส้นพาสต้าสดทำมือ ผัดกับซอสเนยทรัฟเฟิลดำสดจากเปรูจา พาร์เมซานชีส 36 เดือน</p>
+                            <button onclick="switchPage('menu')" class="text-gold-400 text-xs font-cinzel tracking-wider uppercase font-semibold flex items-center gap-2 hover:gap-3 transition-all">ดูเมนูอาหารทั้งหมด <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Highlight Item 2 -->
+                    <div class="bg-dark-800 border border-gold-500/20 overflow-hidden rounded-sm group hover:border-gold-500/50 transition-all">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80" alt="Neapolitan Pizza" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <span class="absolute top-4 right-4 bg-dark-900/90 text-gold-400 font-cinzel text-sm px-3 py-1 border border-gold-500/30">฿ 890</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl font-bold text-white mb-2">Pizza Margherita Gourmet</h3>
+                            <p class="text-gray-400 text-sm mb-4">แป้งหมักธรรมชาติ 48 ชม. อบเตาถ่านไม้ฟืน มะเขือเทศ San Marzano และชีส Mozzarella di Bufala</p>
+                            <button onclick="switchPage('menu')" class="text-gold-400 text-xs font-cinzel tracking-wider uppercase font-semibold flex items-center gap-2 hover:gap-3 transition-all">ดูเมนูอาหารทั้งหมด <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Highlight Item 3 -->
+                    <div class="bg-dark-800 border border-gold-500/20 overflow-hidden rounded-sm group hover:border-gold-500/50 transition-all">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" alt="Osso Buco" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <span class="absolute top-4 right-4 bg-dark-900/90 text-gold-400 font-cinzel text-sm px-3 py-1 border border-gold-500/30">฿ 1,680</span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-serif text-xl font-bold text-white mb-2">Ossobuco alla Milanese</h3>
+                            <p class="text-gray-400 text-sm mb-4">เนื้อลูกวัวส่วนน่องเคี่ยวกับไวน์ขาวและเครื่องเทศ 8 ชั่วโมง เสิร์ฟพร้อมรีซอตโตหญ้าฝรั่ง (Saffron Risotto)</p>
+                            <button onclick="switchPage('menu')" class="text-gold-400 text-xs font-cinzel tracking-wider uppercase font-semibold flex items-center gap-2 hover:gap-3 transition-all">ดูเมนูอาหารทั้งหมด <i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Atmosphere Banner Section -->
+            <div class="py-24 bg-cover bg-fixed relative" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80');">
+                <div class="absolute inset-0 bg-dark-900/85"></div>
+                <div class="relative max-w-4xl mx-auto text-center px-4 space-y-6">
+                    <span class="text-gold-400 font-cinzel tracking-[0.3em] text-sm uppercase">Exclusive Ambience</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">บรรยากาศแห่งความทรงจำอันทรงคุณค่า</h2>
+                    <p class="text-gray-300 text-base leading-relaxed">
+                        ไม่ว่าจะเป็นมื้อค่ำสุดโรแมนติก การเฉลิมฉลองโอกาสพิเศษ หรือการรับรองแขกธุรกิจสำคัญ Ristorante Bella Vista พร้อมมอบประสบการณ์การรับประทานอาหารที่ไม่เหมือนใคร ด้วยบริการระดับห้าดาว
+                    </p>
+                    <div class="pt-4">
+                        <button onclick="switchPage('reservation')" class="bg-gold-500 text-dark-900 font-bold px-8 py-3.5 rounded-sm hover:bg-gold-400 transition-colors font-cinzel tracking-widest text-xs uppercase">
+                            สำรองโต๊ะพิเศษของคุณ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Reviews / Testimonials -->
+            <div class="py-20 px-4 max-w-7xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <p class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Reviews & Accolades</p>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white">เสียงความประทับใจจากแขกผู้มีเกียรติ</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-dark-800/40 p-8 border border-gold-500/10 rounded-sm relative">
+                        <div class="text-gold-500 mb-4 text-sm flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-6">"รสชาติอาหารสมบูรณ์แบบมาก พาสต้าเส้นสดทำได้นุ่มหนึบกำลังดี ซอสทรัฟเฟิลหอมตลบอบอวลในปาก การบริการระดับเวิลด์คลาสเลยครับ"</p>
+                        <div class="flex items-center gap-3 border-t border-gold-500/10 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">K</div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">คุณกิตติศักดิ์ วงศ์สวัสดิ์</h4>
+                                <p class="text-xs text-gray-500">Food Critic & Lifestyle Writer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-dark-800/40 p-8 border border-gold-500/10 rounded-sm relative">
+                        <div class="text-gold-500 mb-4 text-sm flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-6">"มาฉลองครบรอบแต่งงานที่นี่ ประทับใจการดูแลของพนักงานและ Sommelier แนะนำไวน์ได้เข้ากับ Ossobuco มาก บรรยากาศโรแมนติกสุดๆ"</p>
+                        <div class="flex items-center gap-3 border-t border-gold-500/10 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">P</div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">คุณภัทรินทร์ & คุณอนันต์</h4>
+                                <p class="text-xs text-gray-500">Regular Guests</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-dark-800/40 p-8 border border-gold-500/10 rounded-sm relative">
+                        <div class="text-gold-500 mb-4 text-sm flex gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-sm italic mb-6">"Tiramisu ที่นี่อร่อยที่สุดที่เคยทานในไทย หวานกำลังดี นุ่มละมุนลิ้น กลิ่นกาแฟและเหล้า Amaretto ชัดเจนมาก ต้องกลับมาซ้ำแน่นอน"</p>
+                        <div class="flex items-center gap-3 border-t border-gold-500/10 pt-4">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">M</div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Ms. Sophia Martinez</h4>
+                                <p class="text-xs text-gray-500">International Traveler</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 2: MENU PAGE ================= -->
+        <section id="page-menu" class="page-view page-hidden">
+            <div class="py-16 bg-dark-800/80 border-b border-gold-500/20 text-center px-4">
+                <span class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Authentic Italian Culinary</span>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold text-white mt-2">เมนูอาหารและเครื่องดื่ม</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-4 text-sm">คัดสรรเมนูสุดพิเศษ ปรุงสดใหม่ด้วยวัตถุดิบพรีเมียมจากอิตาลี เพื่อให้คุณได้สัมผัสรสชาติอิตาเลียนขนานแท้</p>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 py-12">
+                <!-- Menu Category Filter Buttons -->
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12">
+                    <button onclick="filterMenu('all')" class="menu-filter-btn active-filter bg-gold-500 text-dark-900 font-bold px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">ทั้งหมด (ALL)</button>
+                    <button onclick="filterMenu('appetizer')" class="menu-filter-btn border border-gold-500/30 text-gray-300 hover:text-gold-400 px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">อาหารเรียกน้ำย่อย (APPETIZERS)</button>
+                    <button onclick="filterMenu('pasta')" class="menu-filter-btn border border-gold-500/30 text-gray-300 hover:text-gold-400 px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">พาสต้าเส้นสด (PASTA)</button>
+                    <button onclick="filterMenu('pizza')" class="menu-filter-btn border border-gold-500/30 text-gray-300 hover:text-gold-400 px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">พิซซ่าเตาถ่าน (PIZZA)</button>
+                    <button onclick="filterMenu('mains')" class="menu-filter-btn border border-gold-500/30 text-gray-300 hover:text-gold-400 px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">จานหลัก (MAINS)</button>
+                    <button onclick="filterMenu('desserts')" class="menu-filter-btn border border-gold-500/30 text-gray-300 hover:text-gold-400 px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">ของหวาน (DESSERTS)</button>
+                    <button onclick="filterMenu('wine')" class="menu-filter-btn border border-gold-500/30 text-gray-300 hover:text-gold-400 px-6 py-2.5 rounded-sm text-xs font-cinzel tracking-wider uppercase transition-all">ไวน์ & เครื่องดื่ม (WINE/DRINKS)</button>
+                </div>
+
+                <!-- Menu Items Grid -->
+                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Item 1: Appetizer -->
+                    <div class="menu-item appetizer bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1541529086526-db283c563270?auto=format&fit=crop&w=400&q=80" alt="Burrata Caprese" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Burrata Pugliese e Pomodorini</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 580</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">บุรราต้าชีสสดจากแคว้นพูเลีย เสิร์ฟพร้อมมะเขือเทศเชอร์รีเชื่อม น้ำมันมะกอกเอ็กซ์ตร้าเวอร์จิน และบะซามิกหมัก 12 ปี</p>
+                            </div>
+                            <span class="text-[11px] text-sage font-semibold uppercase tracking-wider"><i class="fa-solid fa-leaf mr-1"></i> Vegetariano</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 2: Appetizer -->
+                    <div class="menu-item appetizer bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=400&q=80" alt="Beef Carpaccio" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Carpaccio di Manzo</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 650</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">เนื้อแองกัสสไลซ์บางพิเศษ ท็อปด้วยผักร็อคเก็ตพรีเมียม ชีสพาร์เมซานแผ่น และซัฟฟรอนมายองเนส</p>
+                            </div>
+                            <span class="text-[11px] text-copper font-semibold uppercase tracking-wider"><i class="fa-solid fa-fire mr-1"></i> Chef's Recommendation</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 3: Pasta -->
+                    <div class="menu-item pasta bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=400&q=80" alt="Truffle Tagliatelle" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Tagliatelle al Tartufo Nero</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 1,250</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">พาสต้าเส้นตัลยาเตลเลทำมือ ซอสเนยทรัฟเฟิลดำสด และพาร์มิจาโน เรจจาโนหมัก 36 เดือน</p>
+                            </div>
+                            <span class="text-[11px] text-gold-400 font-semibold uppercase tracking-wider"><i class="fa-solid fa-crown mr-1"></i> Signature Dish</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 4: Pasta -->
+                    <div class="menu-item pasta bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1621996346565-e3d5d6281318?auto=format&fit=crop&w=400&q=80" alt="Lobster Ravioli" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Ravioli di Aragosta</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 1,150</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">เกี๊ยวราวิโอลีสอดไส้เนื้อกุ้งมังกรบอสตัน ซอสครีมมะเขือเทศสไตล์บิสก์หอมกลิ่นบรั่นดี</p>
+                            </div>
+                            <span class="text-[11px] text-copper font-semibold uppercase tracking-wider"><i class="fa-solid fa-water mr-1"></i> Fresh Seafood</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 5: Pizza -->
+                    <div class="menu-item pizza bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=80" alt="Neapolitan Pizza" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Pizza Margherita Gourmet</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 890</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">พิซซ่าเตาถ่านสไตล์นาโปลี มะเขือเทศ San Marzano, ชีส Mozzarella di Bufala และใบโหระพาอิตาเลียน</p>
+                            </div>
+                            <span class="text-[11px] text-sage font-semibold uppercase tracking-wider"><i class="fa-solid fa-fire mr-1"></i> Wood-fired</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 6: Pizza -->
+                    <div class="menu-item pizza bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" alt="Prosciutto Pizza" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Pizza Prosciutto e Tartufo</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 980</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">พาร์มาแฮมหมัก 24 เดือน, ซอสทรัฟเฟิลขาว, ชีสฟิออร์ดิลาตเต้ และผักร็อคเก็ตสด</p>
+                            </div>
+                            <span class="text-[11px] text-copper font-semibold uppercase tracking-wider"><i class="fa-solid fa-star mr-1"></i> Popular</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 7: Mains -->
+                    <div class="menu-item mains bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" alt="Osso Buco" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Ossobuco alla Milanese</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 1,680</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">เนื้อลูกวัวส่วนน่องเคี่ยวตุ๋นกับไวน์ขาวและผักสมุนไพร เสิร์ฟพร้อม Saffron Risotto สีทอง</p>
+                            </div>
+                            <span class="text-[11px] text-gold-400 font-semibold uppercase tracking-wider"><i class="fa-solid fa-crown mr-1"></i> Classic Milanese</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 8: Mains -->
+                    <div class="menu-item mains bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80" alt="Bistecca alla Fiorentina" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Bistecca alla Fiorentina (1kg)</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 3,900</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">สเต๊กทีโบนเนื้อแบล็กแองกัสออสเตรเลียย่างเตาถ่านสไตล์ทัสคานี เสิร์ฟพร้อมมันฝรั่งโรสแมรี่</p>
+                            </div>
+                            <span class="text-[11px] text-copper font-semibold uppercase tracking-wider"><i class="fa-solid fa-[#F0E68C] fa-drumstick-bite mr-1"></i> Ideal for Sharing</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 9: Desserts -->
+                    <div class="menu-item desserts bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&q=80" alt="Tiramisu Classico" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Tiramisù Tradizionale</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 380</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">ทิรามิสุสูตรต้นตำรับ เลดี้ฟิงเกอร์แช่กาแฟเอสเปรสโซเข้มข้น มัสคาร์โปเนชีสนุ่มฟู และผงโกโก้วาลโรนา</p>
+                            </div>
+                            <span class="text-[11px] text-gold-400 font-semibold uppercase tracking-wider"><i class="fa-solid fa-heart mr-1"></i> Chef Special</span>
+                        </div>
+                    </div>
+
+                    <!-- Item 10: Wine -->
+                    <div class="menu-item wine bg-dark-800/40 p-6 border border-gold-500/15 rounded-sm flex flex-col sm:flex-row gap-6 hover:border-gold-500/40 transition-all">
+                        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&q=80" alt="Brunello di Montalcino" class="w-full sm:w-36 h-36 object-cover rounded-sm flex-shrink-0">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-serif text-xl font-bold text-white">Brunello di Montalcino DOCG 2017</h3>
+                                    <span class="text-gold-400 font-cinzel font-bold text-lg">฿ 5,800</span>
+                                </div>
+                                <p class="text-gray-400 text-sm leading-relaxed mb-3">ไวน์แดงพรีเมียมจากทัสคานี กลิ่นหอมฟรุตตี้ สมุนไพรแห้ง และเครื่องเทศ เหมาะสำหรับทานคู่กับเนื้อย่าง</p>
+                            </div>
+                            <span class="text-[11px] text-copper font-semibold uppercase tracking-wider"><i class="fa-solid fa-wine-bottle mr-1"></i> Fine Wine Selection</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 3: ABOUT US PAGE ================= -->
+        <section id="page-about" class="page-view page-hidden">
+            <div class="py-20 px-4 max-w-7xl mx-auto space-y-20">
+                <!-- Story Header -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <span class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Our Culinary Heritage</span>
+                        <h1 class="font-serif text-4xl sm:text-5xl font-bold text-white leading-tight">
+                            เรื่องราวและความหลงใหล <br><span class="gold-gradient-text italic">สไตล์อิตาเลียนแท้</span>
+                        </h1>
+                        <p class="text-gray-300 leading-relaxed text-sm sm:text-base">
+                            Ristorante Bella Vista ก่อตั้งขึ้นด้วยความรักและความหลงใหลในศิลปะการทำอาหารอิตาเลียน โดย Chef Mateo Rossi ผู้เติบโตในเมืองฟลอเรนซ์ ประเทศอิตาลี เราเชื่อว่าอาหารอิตาเลียนไม่ได้เป็นเพียงแค่มื้ออาหาร แต่คือการแบ่งปันความสุขและช่วงเวลาอันอบอุ่นกับคนที่คุณรัก
+                        </p>
+                        <p class="text-gray-400 leading-relaxed text-sm">
+                            เรานำเข้าวัตถุดิบหลักโดยตรงจากผู้ผลิตขนาดเล็กในอิตาลี เพื่อคงไว้ซึ่งรสชาติและคุณภาพดั้งเดิม ให้ทุกท่านได้สัมผัสบรรยากาศเหมือนรับประทานอาหาร ณ ใจกลางแคว้นทัสคานี
+                        </p>
+                        <div class="pt-4 flex items-center gap-6">
+                            <div class="border-l-2 border-gold-500 pl-4">
+                                <span class="font-cinzel text-3xl font-bold text-gold-400 block">25+</span>
+                                <span class="text-xs text-gray-400 uppercase tracking-wider">Years Experience</span>
+                            </div>
+                            <div class="border-l-2 border-gold-500 pl-4">
+                                <span class="font-cinzel text-3xl font-bold text-gold-400 block">3</span>
+                                <span class="text-xs text-gray-400 uppercase tracking-wider">Michelin Stars Team</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=800&q=80" alt="Executive Chef" class="rounded-sm shadow-2xl border border-gold-500/20 w-full h-[450px] object-cover">
+                        <div class="absolute -bottom-6 -left-6 bg-dark-800 p-6 border border-gold-500/30 rounded-sm hidden sm:block max-w-xs">
+                            <p class="font-serif italic text-gold-400 text-sm">"La cucina è una forma d'arte perคนพิเศษ."</p>
+                            <span class="text-xs text-gray-400 block mt-2 font-cinzel">— Executive Chef Mateo Rossi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Gallery -->
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <span class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Visual Journey</span>
+                        <h2 class="font-serif text-3xl font-bold text-white mt-1">แกลเลอรีบรรยากาศและเชฟของเรา</h2>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80" class="w-full h-56 object-cover rounded-sm hover:opacity-90 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" class="w-full h-56 object-cover rounded-sm hover:opacity-90 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80" class="w-full h-56 object-cover rounded-sm hover:opacity-90 transition-opacity">
+                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80" class="w-full h-56 object-cover rounded-sm hover:opacity-90 transition-opacity">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 4: RESERVATION PAGE ================= -->
+        <section id="page-reservation" class="page-view page-hidden">
+            <div class="py-16 bg-dark-800/80 border-b border-gold-500/20 text-center px-4">
+                <span class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Table Booking</span>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold text-white mt-2">สำรองโต๊ะอาหารล่วงหน้า</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-4 text-sm">ร่วมสัมผัสประสบการณ์การรับประทานอาหารสุดพิเศษที่ Bella Vista กรุณากรอกข้อมูลเพื่อสำรองโต๊ะ</p>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 py-16">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <!-- Reservation Form -->
+                    <div class="lg:col-span-7 bg-dark-800 border border-gold-500/30 p-8 rounded-sm shadow-xl">
+                        <h2 class="font-serif text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                            <i class="fa-regular fa-calendar-check text-gold-400"></i> ข้อมูลการจองโต๊ะ
+                        </h2>
+
+                        <form id="reservationForm" onsubmit="handleReservationSubmit(event)" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">ชื่อ-นามสกุล *</label>
+                                    <input type="text" required placeholder="คุณสมชาย วงศ์สุข" class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">เบอร์โทรศัพท์ติดต่อ *</label>
+                                    <input type="tel" required placeholder="081-234-5678" class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <div>
+                                    <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">วันที่ต้องการจอง *</label>
+                                    <input type="date" id="resDate" required class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">เวลา *</label>
+                                    <select required class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                        <option value="">เลือกเวลา</option>
+                                        <option value="17:30">17:30 น. (อาหารค่ำรอบแรก)</option>
+                                        <option value="18:30">18:30 น.</option>
+                                        <option value="19:30">19:30 น. (ช่วงคึกคัก)</option>
+                                        <option value="20:30">20:30 น.</option>
+                                        <option value="21:30">21:30 น. (รอบสุดท้าย)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">จำนวนแขก *</label>
+                                    <select required class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                        <option value="2">2 ท่าน (สำหรับคู่รัก)</option>
+                                        <option value="4">4 ท่าน (ครอบครัว/เพื่อน)</option>
+                                        <option value="6">6 ท่าน (กลุ่มเล็ก)</option>
+                                        <option value="8">8+ ท่าน (ห้องส่วนตัว VIP)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Seating Area Selection Simulator -->
+                            <div>
+                                <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-3">เลือกโซนที่นั่งโปรด (Seating Area)</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <label class="cursor-pointer border border-gold-500/30 p-3 rounded-sm text-center hover:border-gold-500 transition-colors bg-dark-900 flex flex-col items-center">
+                                        <input type="radio" name="seatingZone" value="Main Dining" checked class="accent-gold-500 mb-2">
+                                        <span class="text-xs font-semibold text-white block">Main Dining</span>
+                                        <span class="text-[10px] text-gray-400">ห้องโถงหลักหรูหรา</span>
+                                    </label>
+                                    <label class="cursor-pointer border border-gold-500/30 p-3 rounded-sm text-center hover:border-gold-500 transition-colors bg-dark-900 flex flex-col items-center">
+                                        <input type="radio" name="seatingZone" value="Terrace Garden" class="accent-gold-500 mb-2">
+                                        <span class="text-xs font-semibold text-white block">Terrace Garden</span>
+                                        <span class="text-[10px] text-gray-400">ระเบียงรับลมชมวิว</span>
+                                    </label>
+                                    <label class="cursor-pointer border border-gold-500/30 p-3 rounded-sm text-center hover:border-gold-500 transition-colors bg-dark-900 flex flex-col items-center">
+                                        <input type="radio" name="seatingZone" value="VIP Private Room" class="accent-gold-500 mb-2">
+                                        <span class="text-xs font-semibold text-white block">VIP Room</span>
+                                        <span class="text-[10px] text-gray-400">ห้องส่วนตัวพิเศษ</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">คำขอพิเศษเพิ่มเติม (Optional)</label>
+                                <textarea rows="3" placeholder="ระบุการแพ้อาหาร หรือเนื่องในโอกาสพิเศษ เช่น วันครบรอบ/วันเกิด..." class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 text-dark-900 font-bold py-4 rounded-sm hover:brightness-110 transition-all font-cinzel text-sm uppercase tracking-widest shadow-lg shadow-gold-500/20">
+                                ยืนยันการสำรองโต๊ะอาหาร
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Reservation Policy & Info -->
+                    <div class="lg:col-span-5 space-y-8">
+                        <div class="bg-dark-800/60 border border-gold-500/20 p-8 rounded-sm space-y-4">
+                            <h3 class="font-serif text-xl font-bold text-gold-400">ข้อแนะนำสำหรับการจอง</h3>
+                            <ul class="space-y-3 text-sm text-gray-300">
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-clock text-gold-500 mt-1"></i>
+                                    <span>กรุณาเดินทางมาถึงก่อนเวลาจองประมาณ 15 นาที หากเลทเกิน 20 นาที โต๊ะอาจถูกยกเลิก</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-shirt text-gold-500 mt-1"></i>
+                                    <span><strong>Dress Code:</strong> Smart Casual (งดเว้นรองเท้าแตะและกางเกงขาสั้นสำหรับสุภาพบุรุษ)</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-[#F0E68C] fa-wine-glass text-gold-500 mt-1"></i>
+                                    <span>สำหรับการจองกลุ่มมากกว่า 8 ท่าน หรือเช่าเหมาห้อง VIP กรุณาล่วงหน้า 3 วัน</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Live Status Simulation Widget -->
+                        <div class="bg-dark-800/60 border border-gold-500/20 p-8 rounded-sm">
+                            <h3 class="font-cinzel text-sm font-bold text-white uppercase tracking-wider mb-4 flex items-center justify-between">
+                                <span>สถานะที่นั่งว่างวันนี้</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between text-xs">
+                                    <span class="text-gray-400">Main Dining Room</span>
+                                    <span class="text-gold-400 font-semibold">ว่าง 3 โต๊ะ</span>
+                                </div>
+                                <div class="w-full bg-dark-900 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-gold-500 h-full w-[80%]"></div>
+                                </div>
+
+                                <div class="flex justify-between text-xs pt-2">
+                                    <span class="text-gray-400">Terrace Garden</span>
+                                    <span class="text-emerald-400 font-semibold">ว่าง 5 โต๊ะ</span>
+                                </div>
+                                <div class="w-full bg-dark-900 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-emerald-500 h-full w-[50%]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= PAGE 5: CONTACT US PAGE ================= -->
+        <section id="page-contact" class="page-view page-hidden">
+            <div class="py-16 bg-dark-800/80 border-b border-gold-500/20 text-center px-4">
+                <span class="text-gold-400 font-cinzel text-xs tracking-[0.3em] uppercase">Get In Touch</span>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold text-white mt-2">ติดต่อและสอบถาม</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-4 text-sm">เรายินดีต้อนรับและพร้อมให้บริการตอบข้อสงสัยหรือจัดงานอีเวนต์พิเศษของคุณ</p>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 py-16">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Contact Details & Map Simulation -->
+                    <div class="space-y-8">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="bg-dark-800 p-6 border border-gold-500/20 rounded-sm">
+                                <i class="fa-solid fa-location-dot text-gold-400 text-2xl mb-3"></i>
+                                <h3 class="font-serif font-bold text-white text-lg mb-1">ที่อยู่ร้าน</h3>
+                                <p class="text-gray-400 text-sm">128/9 ถนนสุขุมวิท แขวงคลองเตยเหนือ เขตวัฒนา กรุงเทพมหานคร 10110</p>
+                            </div>
+
+                            <div class="bg-dark-800 p-6 border border-gold-500/20 rounded-sm">
+                                <i class="fa-solid fa-clock text-gold-400 text-2xl mb-3"></i>
+                                <h3 class="font-serif font-bold text-white text-lg mb-1">เวลาทำการ</h3>
+                                <p class="text-gray-400 text-sm">อังคาร - อาทิตย์: 17:00 - 23:00 น.<br><span class="text-copper">(ปิดทำการทุกวันจันทร์)</span></p>
+                            </div>
+
+                            <div class="bg-dark-800 p-6 border border-gold-500/20 rounded-sm">
+                                <i class="fa-solid fa-phone text-gold-400 text-2xl mb-3"></i>
+                                <h3 class="font-serif font-bold text-white text-lg mb-1">โทรศัพท์</h3>
+                                <p class="text-gray-400 text-sm">+66 (0) 2 789 0123<br>+66 (0) 89 123 4567</p>
+                            </div>
+
+                            <div class="bg-dark-800 p-6 border border-gold-500/20 rounded-sm">
+                                <i class="fa-solid fa-envelope text-gold-400 text-2xl mb-3"></i>
+                                <h3 class="font-serif font-bold text-white text-lg mb-1">อีเมล</h3>
+                                <p class="text-gray-400 text-sm">info@bellavista-dining.com<br>events@bellavista-dining.com</p>
+                            </div>
+                        </div>
+
+                        <!-- Simulated Map Container -->
+                        <div class="bg-dark-800 border border-gold-500/20 rounded-sm p-4 h-64 relative flex flex-col justify-end overflow-hidden group">
+                            <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&w=1000&q=80" alt="Map Preview" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700">
+                            <div class="relative z-10 bg-dark-900/90 backdrop-blur-md p-4 rounded border border-gold-500/30 flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-bold text-white text-sm">Ristorante Bella Vista</h4>
+                                    <p class="text-xs text-gray-400">Sukhumvit, Bangkok</p>
+                                </div>
+                                <a href="https://maps.google.com" target="_blank" class="bg-gold-500 text-dark-900 px-3 py-1.5 rounded text-xs font-bold font-cinzel">เปิดแผนที่ Google Maps</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="bg-dark-800 border border-gold-500/30 p-8 rounded-sm shadow-xl">
+                        <h2 class="font-serif text-2xl font-bold text-white mb-6">ส่งข้อความหาเรา</h2>
+                        <form id="contactForm" onsubmit="handleContactSubmit(event)" class="space-y-6">
+                            <div>
+                                <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">ชื่อผู้ติดต่อ *</label>
+                                <input type="text" required placeholder="ชื่อของคุณ" class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">อีเมลติดต่อ *</label>
+                                <input type="email" required placeholder="example@email.com" class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">หัวข้อเรื่อง *</label>
+                                <select required class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors">
+                                    <option value="general">สอบถามข้อมูลทั่วไป</option>
+                                    <option value="event">จัดงานเลี้ยง / อีเวนต์ส่วนตัว</option>
+                                    <option value="feedback">ข้อเสนอแนะและบริการ</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-cinzel text-gold-400 uppercase tracking-wider mb-2">ข้อความ *</label>
+                                <textarea rows="4" required placeholder="พิมพ์ข้อความของคุณที่นี่..." class="w-full bg-dark-900 border border-gold-500/30 rounded-sm px-4 py-3 text-sm text-white focus:outline-none focus:border-gold-500 transition-colors"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gold-500 text-dark-900 font-bold py-4 rounded-sm hover:bg-gold-400 transition-all font-cinzel text-sm uppercase tracking-widest shadow-lg shadow-gold-500/20">
+                                ส่งข้อความ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Notification Modal (Alert alternative) -->
+    <div id="notificationModal" class="fixed inset-0 bg-dark-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-dark-800 border border-gold-500/50 p-8 rounded-sm max-w-md w-full text-center space-y-4 shadow-2xl mx-4">
+            <div class="w-16 h-16 rounded-full bg-gold-500/20 border border-gold-500 text-gold-400 flex items-center justify-center mx-auto text-2xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 id="modalTitle" class="font-serif text-2xl font-bold text-white">สำเร็จ</h3>
+            <p id="modalMessage" class="text-gray-300 text-sm leading-relaxed">ดำเนินการเรียบร้อยแล้ว</p>
+            <button onclick="closeModal()" class="w-full bg-gold-500 text-dark-900 font-bold py-3 rounded-sm font-cinzel text-xs uppercase tracking-wider hover:bg-gold-400 transition-colors">
+                ตกลง
+            </button>
+        </div>
+    </div>
+
+    <!-- Luxury Footer -->
+    <footer class="bg-dark-900 border-t border-gold-500/20 pt-16 pb-8 text-gray-400 text-sm">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Col 1: Brand Info -->
+            <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full border border-gold-500 flex items-center justify-center bg-dark-800 text-gold-500">
+                        <i class="fa-solid fa-utensils text-sm"></i>
+                    </div>
+                    <span class="font-cinzel text-lg font-bold text-white tracking-widest">BELLA VISTA</span>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">
+                    ภัตตาคารอิตาเลียนระดับไฮเอนด์ มุ่งมั่นถ่ายทอดวัฒนธรรมและสุนทรียภาพแห่งอาหารชั้นสูงอย่างสมบูรณ์แบบ
+                </p>
+            </div>
+
+            <!-- Col 2: Navigation Links -->
+            <div>
+                <h4 class="font-cinzel text-white text-xs tracking-widest uppercase mb-4 border-b border-gold-500/20 pb-2">หน้าเว็บไซต์</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><button onclick="switchPage('home')" class="hover:text-gold-400 transition-colors">หน้าแรก (Home)</button></li>
+                    <li><button onclick="switchPage('menu')" class="hover:text-gold-400 transition-colors">เมนูอาหาร (Menu)</button></li>
+                    <li><button onclick="switchPage('about')" class="hover:text-gold-400 transition-colors">เกี่ยวกับเรา (About Us)</button></li>
+                    <li><button onclick="switchPage('reservation')" class="hover:text-gold-400 transition-colors">สำรองโต๊ะ (Reservation)</button></li>
+                    <li><button onclick="switchPage('contact')" class="hover:text-gold-400 transition-colors">ติดต่อเรา (Contact Us)</button></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Hours -->
+            <div>
+                <h4 class="font-cinzel text-white text-xs tracking-widest uppercase mb-4 border-b border-gold-500/20 pb-2">เวลาเปิดให้บริการ</h4>
+                <div class="text-xs space-y-1">
+                    <p class="text-white">มื้อค่ำ (Dinner Service)</p>
+                    <p>อังคาร - อาทิตย์: 17:00 - 23:00 น.</p>
+                    <p class="text-copper pt-1">ปิดทำการวันจันทร์</p>
+                </div>
+            </div>
+
+            <!-- Col 4: Social & Newsletter -->
+            <div>
+                <h4 class="font-cinzel text-white text-xs tracking-widest uppercase mb-4 border-b border-gold-500/20 pb-2">ติดตามข่าวสาร</h4>
+                <div class="flex space-x-4 text-lg text-gold-400 mb-4">
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-line"></i></a>
+                </div>
+                <p class="text-[11px] text-gray-500">© 2026 Ristorante Bella Vista. All Rights Reserved.</p>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-dark-800 text-center text-[11px] text-gray-600">
+            ออกแบบและรังสรรค์เว็บไซต์ร้านอาหารอิตาเลียนหรูหราแบบ 5 หน้าสมบูรณ์แบบ
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Set minimum date for reservation picker to today
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('resDate');
+            if(dateInput) dateInput.setAttribute('min', today);
+        });
+
+        // 1. Multi-page Tab Switching Logic
+        function switchPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => {
+                page.classList.remove('page-visible');
+                page.classList.add('page-hidden');
+            });
+
+            // Show selected page
+            const selectedPage = document.getElementById(`page-${pageId}`);
+            if (selectedPage) {
+                selectedPage.classList.remove('page-hidden');
+                selectedPage.classList.add('page-visible');
+            }
+
+            // Update Navigation active styles
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-gold-400', 'border-gold-500');
+                btn.classList.add('text-gray-300', 'border-transparent');
+            });
+
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-gray-300', 'border-transparent');
+                activeNav.classList.add('text-gold-400', 'border-gold-500');
+            }
+
+            // Scroll to top smooth
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 2. Mobile Menu Toggle Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 3. Menu Filtering Logic
+        function filterMenu(category) {
+            // Button Styles Toggle
+            const filterBtns = document.querySelectorAll('.menu-filter-btn');
+            filterBtns.forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-dark-900', 'font-bold');
+                btn.classList.add('border', 'border-gold-500/30', 'text-gray-300');
+            });
+
+            event.currentTarget.classList.remove('border', 'border-gold-500/30', 'text-gray-300');
+            event.currentTarget.classList.add('bg-gold-500', 'text-dark-900', 'font-bold');
+
+            // Item Filter Logic
+            const items = document.querySelectorAll('.menu-item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // 4. Custom Notification Modal (Alert Alternative)
+        function showModal(title, message) {
+            const modal = document.getElementById('notificationModal');
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('notificationModal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // 5. Reservation Form Handler
+        function handleReservationSubmit(e) {
+            e.preventDefault();
+            showModal(
+                'การสำรองโต๊ะสำเร็จ',
+                'ขอบพระคุณสำหรับการสำรองโต๊ะกับ Ristorante Bella Vista ทางเราได้บันทึกการจองของท่านเรียบร้อยแล้ว และจะส่งข้อความยืนยันไปยังเบอร์โทรศัพท์ของท่าน'
+            );
+            e.target.reset();
+        }
+
+        // 6. Contact Form Handler
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showModal(
+                'ส่งข้อความสำเร็จ',
+                'เจ้าหน้าที่ฝ่ายบริการลูกค้าได้รับข้อความของท่านแล้ว และจะติดต่อกลับโดยเร็วที่สุด'
+            );
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
